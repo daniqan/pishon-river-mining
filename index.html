@@ -5,16 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pishon River Mining Company - Leading the Future of Mining</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
-      /* Load Lucide Icons font */
-      @font-face {
-        font-family: 'LucideIcons';
-        /* Use a reliable CDN for the font */
-        src: url(https://cdn.jsdelivr.net/npm/lucide-static@latest/font/Lucide.ttf) format('truetype');
-      }
       /* Basic styling for Lucide icons */
       .lucide {
         font-family: 'LucideIcons';
@@ -105,23 +100,10 @@
         'mountain': '\uF4D6',
         'truck': '\uF63A'
       };
-      // Function to find elements with 'data-lucide' and insert the icon character
-      function loadIcons() {
-        document.querySelectorAll('.lucide[data-lucide]').forEach(el => {
-          const iconName = el.getAttribute('data-lucide');
-          if (icons[iconName]) {
-            // Prevent adding text if icon already exists (e.g., via CSS pseudo-elements if used)
-            if (el.textContent !== icons[iconName]) {
-                el.textContent = icons[iconName];
-            }
-          } else {
-            console.warn(`Lucide icon "${iconName}" not found in map.`);
-            el.textContent = '?'; // Fallback character
-          }
-        });
-      }
       // Load icons once the DOM is fully loaded
-      document.addEventListener('DOMContentLoaded', loadIcons);
+      document.addEventListener('DOMContentLoaded', () => {
+        lucide.createIcons();
+      });
     </script>
 </head>
 <body class="bg-brand-dark text-brand-light">
@@ -320,7 +302,7 @@
     <script>
         // Ensure icons are loaded after DOM is ready
         document.addEventListener('DOMContentLoaded', () => {
-            loadIcons(); // Initial icon load
+            lucide.createIcons(); // Initial icon load
 
             // --- Mobile menu toggle logic ---
             const menuButton = document.getElementById('mobile-menu-button');
@@ -334,7 +316,7 @@
                     menuIcon.setAttribute('data-lucide', isHidden ? 'menu' : 'x');
                     // Set ARIA expanded state for accessibility
                     menuButton.setAttribute('aria-expanded', String(!isHidden)); // Use string true/false
-                    loadIcons(); // Reload icons to render the changed one
+                    lucide.createIcons(); // Reload icons to render the changed one
                 });
 
                 // Close mobile menu when a navigation link is clicked
@@ -343,7 +325,7 @@
                         mobileMenu.classList.add('hidden');
                         menuIcon.setAttribute('data-lucide', 'menu');
                         menuButton.setAttribute('aria-expanded', 'false');
-                        loadIcons(); // Reload icons
+                        lucide.createIcons(); // Reload icons
                     });
                 });
             } else {
