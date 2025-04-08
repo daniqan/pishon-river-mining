@@ -12,6 +12,7 @@
       /* Load Lucide Icons font */
       @font-face {
         font-family: 'LucideIcons';
+        /* Use a reliable CDN for the font */
         src: url(https://cdn.jsdelivr.net/npm/lucide-static@latest/font/Lucide.ttf) format('truetype');
       }
       /* Basic styling for Lucide icons */
@@ -27,18 +28,33 @@
         display: inline-block; /* Ensure icons align correctly */
         vertical-align: middle; /* Align icons with text */
       }
-      /* Define custom gold color variables for Tailwind */
+      /* Define custom gold color variables inspired by the logo */
       :root {
-        --tw-color-gold: #FFD700; /* Standard Gold */
-        --tw-color-gold-dark: #B8860B; /* Darker Gold for hover/accents */
+        /* Primary gold color from logo */
+        --tw-color-gold: #F5B53F; /* Adjusted gold - slightly less saturated than pure FFD700, closer to logo */
+        /* Darker gold for hover/accents, derived from logo shadows */
+        --tw-color-gold-dark: #D49B35;
+        /* A very dark grey/off-black for backgrounds, matching logo background */
+        --tw-color-brand-dark: #1a1a1a;
+        /* A slightly lighter grey for secondary backgrounds/cards */
+        --tw-color-brand-medium: #2a2a2a;
+        /* A light grey for text */
+        --tw-color-brand-light: #cccccc;
+        /* A subtle grey for borders */
+        --tw-color-brand-border: #404040;
       }
-      /* Utility classes for custom gold color */
+      /* Utility classes for custom colors */
       .bg-gold { background-color: var(--tw-color-gold); }
       .text-gold { color: var(--tw-color-gold); }
       .border-gold { border-color: var(--tw-color-gold); }
       .hover\:bg-gold-dark:hover { background-color: var(--tw-color-gold-dark); }
       .hover\:text-gold-dark:hover { color: var(--tw-color-gold-dark); }
-      .focus\:ring-gold:focus { --tw-ring-color: var(--tw-color-gold); } /* For focus rings */
+      .focus\:ring-gold:focus { --tw-ring-color: var(--tw-color-gold); }
+
+      .bg-brand-dark { background-color: var(--tw-color-brand-dark); }
+      .bg-brand-medium { background-color: var(--tw-color-brand-medium); }
+      .text-brand-light { color: var(--tw-color-brand-light); }
+      .border-brand-border { border-color: var(--tw-color-brand-border); }
 
       /* Smooth scrolling behavior */
       html {
@@ -47,10 +63,34 @@
       /* Apply Inter font globally */
       body {
         font-family: 'Inter', sans-serif;
+        /* Use the dark background from the logo */
+        background-color: var(--tw-color-brand-dark);
+        /* Use the light text color */
+        color: var(--tw-color-brand-light);
+      }
+      /* Style adjustments for better logo integration */
+      .header-logo {
+        height: 40px; /* Adjust height as needed */
+        width: auto; /* Maintain aspect ratio */
+        margin-right: 0.75rem; /* Add space between logo and text (Tailwind: mr-3) */
+      }
+      /* Ensure placeholder images have a fallback style */
+      img[src^="https://placehold.co"] {
+        background-color: var(--tw-color-brand-medium);
+        color: var(--tw-color-brand-light);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 0.875rem; /* text-sm */
+      }
+      /* Add subtle border to cards/sections */
+      .section-card {
+        border: 1px solid var(--tw-color-brand-border);
       }
     </style>
     <script>
       // Map icon names (from lucide.dev) to their Unicode characters
+      // Ensure all used icons are mapped
       const icons = {
         'menu': '\uF4A7',
         'x': '\uF64F',
@@ -58,21 +98,25 @@
         'map-pin': '\uF49F',
         'phone': '\uF538',
         'mail': '\uF49B',
-        'settings': '\uF5C3', // Service icon example
-        'pickaxe': '\uF966', // Service icon example
-        'gem': '\uF3C2',     // Service icon example
-        'building-2': '\uF22D', // Project icon example
-        'mountain': '\uF4D6', // Project icon example
-        'truck': '\uF63A'    // Project icon example
+        'settings': '\uF5C3',
+        'pickaxe': '\uF966',
+        'gem': '\uF3C2',
+        'building-2': '\uF22D',
+        'mountain': '\uF4D6',
+        'truck': '\uF63A'
       };
       // Function to find elements with 'data-lucide' and insert the icon character
       function loadIcons() {
         document.querySelectorAll('.lucide[data-lucide]').forEach(el => {
           const iconName = el.getAttribute('data-lucide');
           if (icons[iconName]) {
-            el.textContent = icons[iconName];
+            // Prevent adding text if icon already exists (e.g., via CSS pseudo-elements if used)
+            if (el.textContent !== icons[iconName]) {
+                el.textContent = icons[iconName];
+            }
           } else {
-            console.warn(`Lucide icon "${iconName}" not found in map.`); // Warn if icon name is missing
+            console.warn(`Lucide icon "${iconName}" not found in map.`);
+            el.textContent = '?'; // Fallback character
           }
         });
       }
@@ -80,44 +124,49 @@
       document.addEventListener('DOMContentLoaded', loadIcons);
     </script>
 </head>
-<body class="bg-black text-gray-300">
+<body class="bg-brand-dark text-brand-light">
 
-    <header class="bg-gray-900 sticky top-0 z-50 shadow-md">
-        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
-            <a href="#home" class="text-2xl font-bold text-white">
-                Pishon River <span class="text-gold">Mining</span> Company
+    <header class="bg-brand-dark sticky top-0 z-50 shadow-lg border-b border-brand-border">
+        <nav class="container mx-auto px-6 py-3 flex justify-between items-center">
+            <a href="#home" class="flex items-center">
+                <img src="https://image.pollinations.ai/prompt/image_2a9c31.jpg" alt="Pishon River Mining Company Logo" class="header-logo"
+                     onerror="this.style.display='none'; console.error('Failed to load logo image')">
+                <span class="text-xl font-bold text-white whitespace-nowrap">
+                    Pishon River <span class="text-gold">Mining</span> Co.
+                </span>
             </a>
             <div class="hidden md:flex space-x-6 items-center">
-                <a href="#home" class="text-gray-300 hover:text-gold transition duration-300">Home</a>
-                <a href="#about" class="text-gray-300 hover:text-gold transition duration-300">About Us</a>
-                <a href="#services" class="text-gray-300 hover:text-gold transition duration-300">Services</a>
-                <a href="#projects" class="text-gray-300 hover:text-gold transition duration-300">Projects</a>
-                <a href="#contact" class="bg-gold text-black font-semibold px-4 py-2 rounded-md hover:bg-gold-dark transition duration-300">Contact Us</a>
+                <a href="#home" class="text-brand-light hover:text-gold transition duration-300">Home</a>
+                <a href="#about" class="text-brand-light hover:text-gold transition duration-300">About Us</a>
+                <a href="#services" class="text-brand-light hover:text-gold transition duration-300">Services</a>
+                <a href="#projects" class="text-brand-light hover:text-gold transition duration-300">Projects</a>
+                <a href="#contact" class="bg-gold text-brand-dark font-semibold px-4 py-2 rounded-md hover:bg-gold-dark transition duration-300">Contact Us</a>
             </div>
             <div class="md:hidden">
-                <button id="mobile-menu-button" class="text-white focus:outline-none" aria-label="Toggle mobile menu">
+                <button id="mobile-menu-button" class="text-white focus:outline-none" aria-label="Toggle mobile menu" aria-expanded="false">
                     <i class="lucide text-2xl" data-lucide="menu"></i>
                 </button>
             </div>
         </nav>
-        <div id="mobile-menu" class="md:hidden hidden bg-gray-800">
-            <a href="#home" class="block px-4 py-2 text-gray-300 hover:bg-gray-700 hover:text-gold transition duration-300">Home</a>
-            <a href="#about" class="block px-4 py-2 text-gray-300 hover:bg-gray-700 hover:text-gold transition duration-300">About Us</a>
-            <a href="#services" class="block px-4 py-2 text-gray-300 hover:bg-gray-700 hover:text-gold transition duration-300">Services</a>
-            <a href="#projects" class="block px-4 py-2 text-gray-300 hover:bg-gray-700 hover:text-gold transition duration-300">Projects</a>
-            <a href="#contact" class="block px-4 py-2 text-gray-300 hover:bg-gray-700 hover:text-gold transition duration-300">Contact Us</a>
+        <div id="mobile-menu" class="md:hidden hidden bg-brand-medium border-t border-brand-border">
+            <a href="#home" class="block px-4 py-3 text-brand-light hover:bg-brand-dark hover:text-gold transition duration-300">Home</a>
+            <a href="#about" class="block px-4 py-3 text-brand-light hover:bg-brand-dark hover:text-gold transition duration-300">About Us</a>
+            <a href="#services" class="block px-4 py-3 text-brand-light hover:bg-brand-dark hover:text-gold transition duration-300">Services</a>
+            <a href="#projects" class="block px-4 py-3 text-brand-light hover:bg-brand-dark hover:text-gold transition duration-300">Projects</a>
+            <a href="#contact" class="block px-4 py-3 text-brand-light hover:bg-brand-dark hover:text-gold transition duration-300">Contact Us</a>
         </div>
     </header>
 
     <main>
-        <section id="home" class="bg-gray-900 text-white h-[70vh] flex items-center justify-center relative overflow-hidden">
-             <div class="absolute inset-0 bg-cover bg-center z-[-1]" style="background-image: url('https://placehold.co/1920x1080/1a202c/4a5568?text=Mining+Site+Background');" aria-hidden="true"></div>
-             <div class="absolute inset-0 bg-black opacity-60 z-0" aria-hidden="true"></div> <div class="text-center z-10 p-6 relative">
-                <h1 class="text-5xl md:text-7xl font-bold mb-4">
+        <section id="home" class="bg-brand-dark text-white min-h-[70vh] flex items-center justify-center relative overflow-hidden">
+             <div class="absolute inset-0 bg-cover bg-center z-[-1]" style="background-image: url('https://placehold.co/1920x1080/1a1a1a/404040?text=Mining+Site+Background');" aria-hidden="true"></div>
+             <div class="absolute inset-0 bg-black opacity-70 z-0" aria-hidden="true"></div>
+             <div class="text-center z-10 p-6 relative max-w-4xl mx-auto">
+                <h1 class="text-4xl sm:text-5xl md:text-6xl font-bold mb-4 leading-tight">
                     Pishon River <span class="text-gold">Mining</span> Company
                 </h1>
-                <p class="text-xl md:text-2xl text-gray-300 mb-8">Pioneering Sustainable Resource Extraction</p>
-                <a href="#contact" class="bg-gold text-black font-semibold px-8 py-3 rounded-md text-lg hover:bg-gold-dark transition duration-300">Get In Touch</a>
+                <p class="text-lg md:text-xl text-brand-light mb-8">Pioneering Sustainable Resource Extraction</p>
+                <a href="#contact" class="bg-gold text-brand-dark font-semibold px-8 py-3 rounded-md text-lg hover:bg-gold-dark transition duration-300">Get In Touch</a>
             </div>
             <div class="absolute bottom-10 left-1/2 transform -translate-x-1/2 z-10">
                  <a href="#about" aria-label="Scroll to About section">
@@ -126,31 +175,32 @@
             </div>
         </section>
 
-        <section id="about" class="py-20 bg-black">
+        <section id="about" class="py-20 bg-brand-dark">
             <div class="container mx-auto px-6 text-center">
-                <h2 class="text-4xl font-bold mb-6 text-white">About <span class="text-gold">Us</span></h2>
+                <h2 class="text-3xl md:text-4xl font-bold mb-6 text-white">About <span class="text-gold">Us</span></h2>
                 <p class="max-w-3xl mx-auto text-lg text-gray-400 leading-relaxed mb-10">
                     Pishon River Mining Company is a forward-thinking resource extraction company dedicated to responsible and innovative mining practices. With decades of combined experience, our team utilizes cutting-edge technology to unlock valuable resources while prioritizing environmental stewardship and community engagement. We are committed to safety, efficiency, and delivering exceptional value to our stakeholders.
                 </p>
-                <img src="https://placehold.co/600x400/333333/cccccc?text=Our+Team+or+Facility" alt="Pishon River Mining team or facility" class="mx-auto rounded-lg shadow-lg" loading="lazy" onerror="this.style.display='none'; console.error('Failed to load about image')">
+                <img src="https://placehold.co/600x400/2a2a2a/cccccc?text=Our+Team+or+Facility" alt="Pishon River Mining team or facility placeholder" class="mx-auto rounded-lg shadow-lg" loading="lazy"
+                     onerror="this.alt='Image failed to load'; this.src='https://placehold.co/600x400/2a2a2a/ff0000?text=Error+Loading+Image';">
             </div>
         </section>
 
-        <section id="services" class="py-20 bg-gray-900">
+        <section id="services" class="py-20 bg-brand-medium">
             <div class="container mx-auto px-6">
-                <h2 class="text-4xl font-bold text-center mb-12 text-white">Our <span class="text-gold">Services</span></h2>
+                <h2 class="text-3xl md:text-4xl font-bold text-center mb-12 text-white">Our <span class="text-gold">Services</span></h2>
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-10">
-                    <div class="bg-gray-800 p-8 rounded-lg shadow-lg text-center transform hover:scale-105 transition duration-300">
+                    <div class="bg-brand-dark p-8 rounded-lg shadow-lg text-center transform hover:scale-105 transition duration-300 section-card">
                         <i class="lucide text-gold text-5xl mb-4 inline-block" data-lucide="pickaxe"></i>
                         <h3 class="text-2xl font-semibold mb-3 text-white">Exploration & Discovery</h3>
                         <p class="text-gray-400">Utilizing advanced geological surveys and techniques to identify and assess potential mineral deposits.</p>
                     </div>
-                    <div class="bg-gray-800 p-8 rounded-lg shadow-lg text-center transform hover:scale-105 transition duration-300">
+                    <div class="bg-brand-dark p-8 rounded-lg shadow-lg text-center transform hover:scale-105 transition duration-300 section-card">
                          <i class="lucide text-gold text-5xl mb-4 inline-block" data-lucide="settings"></i>
                         <h3 class="text-2xl font-semibold mb-3 text-white">Mine Development</h3>
                         <p class="text-gray-400">Efficient and safe development of mining sites, from planning and infrastructure to resource extraction.</p>
                     </div>
-                    <div class="bg-gray-800 p-8 rounded-lg shadow-lg text-center transform hover:scale-105 transition duration-300">
+                    <div class="bg-brand-dark p-8 rounded-lg shadow-lg text-center transform hover:scale-105 transition duration-300 section-card">
                          <i class="lucide text-gold text-5xl mb-4 inline-block" data-lucide="gem"></i>
                         <h3 class="text-2xl font-semibold mb-3 text-white">Processing & Refining</h3>
                         <p class="text-gray-400">State-of-the-art processing facilities to refine raw materials into high-quality end products.</p>
@@ -159,28 +209,31 @@
             </div>
         </section>
 
-        <section id="projects" class="py-20 bg-black">
+        <section id="projects" class="py-20 bg-brand-dark">
             <div class="container mx-auto px-6">
-                <h2 class="text-4xl font-bold text-center mb-12 text-white">Featured <span class="text-gold">Projects</span></h2>
+                <h2 class="text-3xl md:text-4xl font-bold text-center mb-12 text-white">Featured <span class="text-gold">Projects</span></h2>
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                    <div class="bg-gray-900 rounded-lg overflow-hidden shadow-lg group">
-                        <img src="https://placehold.co/600x400/1a202c/FFD700?text=Project+Alpha" alt="Project Alpha placeholder image" class="w-full h-48 object-cover transition duration-300 group-hover:opacity-80" loading="lazy" onerror="this.src='https://placehold.co/600x400/1a202c/cccccc?text=Image+Not+Found'; this.alt='Image loading error'">
+                    <div class="bg-brand-medium rounded-lg overflow-hidden shadow-lg group section-card">
+                        <img src="https://placehold.co/600x400/2a2a2a/F5B53F?text=Project+Alpha" alt="Project Alpha placeholder image" class="w-full h-48 object-cover transition duration-300 group-hover:opacity-80" loading="lazy"
+                             onerror="this.src='https://placehold.co/600x400/2a2a2a/cccccc?text=Image+Not+Found'; this.alt='Image loading error'">
                         <div class="p-6">
                             <h3 class="text-xl font-semibold mb-2 text-white">Project Alpha</h3>
                             <p class="text-gray-400 mb-4">Successful gold exploration and development in the Northern Territory.</p>
                             <a href="#" class="text-gold hover:text-gold-dark font-medium">Learn More &rarr;</a>
                         </div>
                     </div>
-                    <div class="bg-gray-900 rounded-lg overflow-hidden shadow-lg group">
-                        <img src="https://placehold.co/600x400/1a202c/FFD700?text=Sierra+Mine+Expansion" alt="Sierra Mine Expansion placeholder image" class="w-full h-48 object-cover transition duration-300 group-hover:opacity-80" loading="lazy" onerror="this.src='https://placehold.co/600x400/1a202c/cccccc?text=Image+Not+Found'; this.alt='Image loading error'">
+                    <div class="bg-brand-medium rounded-lg overflow-hidden shadow-lg group section-card">
+                        <img src="https://placehold.co/600x400/2a2a2a/F5B53F?text=Sierra+Mine+Expansion" alt="Sierra Mine Expansion placeholder image" class="w-full h-48 object-cover transition duration-300 group-hover:opacity-80" loading="lazy"
+                             onerror="this.src='https://placehold.co/600x400/2a2a2a/cccccc?text=Image+Not+Found'; this.alt='Image loading error'">
                         <div class="p-6">
                             <h3 class="text-xl font-semibold mb-2 text-white">Sierra Mine Expansion</h3>
                             <p class="text-gray-400 mb-4">Increasing copper output through strategic infrastructure upgrades.</p>
                              <a href="#" class="text-gold hover:text-gold-dark font-medium">Learn More &rarr;</a>
                         </div>
                     </div>
-                    <div class="bg-gray-900 rounded-lg overflow-hidden shadow-lg group">
-                        <img src="https://placehold.co/600x400/1a202c/FFD700?text=Coastal+Minerals+Survey" alt="Coastal Minerals Survey placeholder image" class="w-full h-48 object-cover transition duration-300 group-hover:opacity-80" loading="lazy" onerror="this.src='https://placehold.co/600x400/1a202c/cccccc?text=Image+Not+Found'; this.alt='Image loading error'">
+                    <div class="bg-brand-medium rounded-lg overflow-hidden shadow-lg group section-card">
+                        <img src="https://placehold.co/600x400/2a2a2a/F5B53F?text=Coastal+Minerals+Survey" alt="Coastal Minerals Survey placeholder image" class="w-full h-48 object-cover transition duration-300 group-hover:opacity-80" loading="lazy"
+                             onerror="this.src='https://placehold.co/600x400/2a2a2a/cccccc?text=Image+Not+Found'; this.alt='Image loading error'">
                         <div class="p-6">
                             <h3 class="text-xl font-semibold mb-2 text-white">Coastal Minerals Survey</h3>
                             <p class="text-gray-400 mb-4">Comprehensive geological survey identifying new offshore resources.</p>
@@ -191,16 +244,16 @@
             </div>
         </section>
 
-        <section id="contact" class="py-20 bg-gray-900">
+        <section id="contact" class="py-20 bg-brand-medium">
             <div class="container mx-auto px-6">
-                <h2 class="text-4xl font-bold text-center mb-12 text-white">Contact <span class="text-gold">Us</span></h2>
-                <div class="max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-10">
-                    <div class="text-gray-300">
+                <h2 class="text-3xl md:text-4xl font-bold text-center mb-12 text-white">Contact <span class="text-gold">Us</span></h2>
+                <div class="max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-10 bg-brand-dark p-8 md:p-10 rounded-lg shadow-xl section-card">
+                    <div class="text-brand-light">
                         <h3 class="text-2xl font-semibold mb-4 text-white">Get in Touch</h3>
                         <p class="mb-6 text-gray-400">Have questions or want to discuss a project? Reach out to us using the details below or the contact form.</p>
                         <div class="space-y-4">
-                            <p class="flex items-center">
-                                <i class="lucide text-gold mr-3 flex-shrink-0" data-lucide="map-pin"></i>
+                            <p class="flex items-start sm:items-center">
+                                <i class="lucide text-gold mr-3 flex-shrink-0 mt-1 sm:mt-0" data-lucide="map-pin"></i>
                                 <span>123 Mining Drive, Bedrock City, 10001</span>
                             </p>
                             <p class="flex items-center">
@@ -212,35 +265,35 @@
                                 <a href="mailto:info@pishonriverminingco.com" class="hover:text-gold transition duration-300">info@pishonriverminingco.com</a>
                             </p>
                         </div>
-                         <div class="mt-8 rounded-lg overflow-hidden h-64 bg-gray-800 flex items-center justify-center text-gray-500">
+                         <div class="mt-8 rounded-lg overflow-hidden h-64 bg-brand-medium border border-brand-border flex items-center justify-center text-gray-500">
                             <p>Map Placeholder</p>
-                         </div>
+                            </div>
                     </div>
 
                     <form id="contact-form" class="space-y-6" novalidate>
                         <div>
-                            <label for="name" class="block text-sm font-medium text-gray-300 mb-1">Name</label>
+                            <label for="name" class="block text-sm font-medium text-brand-light mb-1">Name</label>
                             <input type="text" id="name" name="name" required aria-required="true"
-                                   class="w-full px-4 py-2 bg-gray-800 border border-gray-700 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-gold focus:border-transparent placeholder-gray-500" placeholder="Your Full Name">
+                                   class="w-full px-4 py-2 bg-brand-medium border border-brand-border rounded-md text-white focus:outline-none focus:ring-2 focus:ring-gold focus:border-transparent placeholder-gray-500" placeholder="Your Full Name">
                         </div>
                         <div>
-                            <label for="email" class="block text-sm font-medium text-gray-300 mb-1">Email</label>
+                            <label for="email" class="block text-sm font-medium text-brand-light mb-1">Email</label>
                             <input type="email" id="email" name="email" required aria-required="true"
-                                   class="w-full px-4 py-2 bg-gray-800 border border-gray-700 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-gold focus:border-transparent placeholder-gray-500" placeholder="your.email@example.com">
+                                   class="w-full px-4 py-2 bg-brand-medium border border-brand-border rounded-md text-white focus:outline-none focus:ring-2 focus:ring-gold focus:border-transparent placeholder-gray-500" placeholder="your.email@example.com">
                         </div>
                         <div>
-                            <label for="subject" class="block text-sm font-medium text-gray-300 mb-1">Subject</label>
+                            <label for="subject" class="block text-sm font-medium text-brand-light mb-1">Subject</label>
                             <input type="text" id="subject" name="subject"
-                                   class="w-full px-4 py-2 bg-gray-800 border border-gray-700 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-gold focus:border-transparent placeholder-gray-500" placeholder="Reason for contacting us">
+                                   class="w-full px-4 py-2 bg-brand-medium border border-brand-border rounded-md text-white focus:outline-none focus:ring-2 focus:ring-gold focus:border-transparent placeholder-gray-500" placeholder="Reason for contacting us">
                         </div>
                         <div>
-                            <label for="message" class="block text-sm font-medium text-gray-300 mb-1">Message</label>
+                            <label for="message" class="block text-sm font-medium text-brand-light mb-1">Message</label>
                             <textarea id="message" name="message" rows="4" required aria-required="true"
-                                      class="w-full px-4 py-2 bg-gray-800 border border-gray-700 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-gold focus:border-transparent placeholder-gray-500" placeholder="Enter your message here..."></textarea>
+                                      class="w-full px-4 py-2 bg-brand-medium border border-brand-border rounded-md text-white focus:outline-none focus:ring-2 focus:ring-gold focus:border-transparent placeholder-gray-500" placeholder="Enter your message here..."></textarea>
                         </div>
                         <div>
                             <button type="submit"
-                                    class="w-full bg-gold text-black font-semibold px-6 py-3 rounded-md hover:bg-gold-dark transition duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-900 focus:ring-gold">
+                                    class="w-full bg-gold text-brand-dark font-semibold px-6 py-3 rounded-md hover:bg-gold-dark transition duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-brand-dark focus:ring-gold">
                                 Send Message
                             </button>
                         </div>
@@ -251,9 +304,11 @@
         </section>
     </main>
 
-    <footer class="bg-black py-8 border-t border-gray-800">
+    <footer class="bg-brand-dark py-8 border-t border-brand-border">
         <div class="container mx-auto px-6 text-center text-gray-500 text-sm">
-            <p>&copy; <span id="current-year"></span> Pishon River Mining Company. All Rights Reserved.</p>
+             <img src="prmc-logo.jpg" alt="Pishon River Mining Company Logo" class="h-10 w-auto mx-auto mb-4"
+                  onerror="this.style.display='none'; console.error('Failed to load footer logo image')">
+            <p>&copy; <span id="current-year"></span> Pishon River Mining Company Inc. All Rights Reserved.</p>
             <div class="mt-4 space-x-4">
                 <a href="#" class="hover:text-gold transition duration-300">Privacy Policy</a>
                 <span class="select-none">|</span>
@@ -267,10 +322,10 @@
         document.addEventListener('DOMContentLoaded', () => {
             loadIcons(); // Initial icon load
 
-            // Mobile menu toggle logic
+            // --- Mobile menu toggle logic ---
             const menuButton = document.getElementById('mobile-menu-button');
             const mobileMenu = document.getElementById('mobile-menu');
-            const menuIcon = menuButton.querySelector('i.lucide'); // Target the icon specifically
+            const menuIcon = menuButton?.querySelector('i.lucide'); // Use optional chaining
 
             if (menuButton && mobileMenu && menuIcon) {
                 menuButton.addEventListener('click', () => {
@@ -278,7 +333,7 @@
                     // Update icon based on menu state
                     menuIcon.setAttribute('data-lucide', isHidden ? 'menu' : 'x');
                     // Set ARIA expanded state for accessibility
-                    menuButton.setAttribute('aria-expanded', !isHidden);
+                    menuButton.setAttribute('aria-expanded', String(!isHidden)); // Use string true/false
                     loadIcons(); // Reload icons to render the changed one
                 });
 
@@ -292,10 +347,10 @@
                     });
                 });
             } else {
-                console.error("Mobile menu elements not found.");
+                console.error("Mobile menu elements not found or icon element missing.");
             }
 
-            // Contact Form Handling (Client-side simulation)
+            // --- Contact Form Handling (Client-side simulation) ---
             const contactForm = document.getElementById('contact-form');
             const formStatus = document.getElementById('form-status');
 
@@ -304,41 +359,64 @@
                     e.preventDefault(); // Prevent default form submission
 
                     // Basic client-side validation check
-                    const name = contactForm.elements['name'].value.trim();
-                    const email = contactForm.elements['email'].value.trim();
-                    const message = contactForm.elements['message'].value.trim();
+                    const nameInput = contactForm.elements['name'];
+                    const emailInput = contactForm.elements['email'];
+                    const messageInput = contactForm.elements['message'];
                     let isValid = true;
 
+                    // Clear previous errors
+                    formStatus.textContent = '';
+                    formStatus.className = 'mt-4 text-center h-6';
+                    [nameInput, emailInput, messageInput].forEach(input => input.classList.remove('border-red-500'));
+
+
                     // Simple check if required fields are empty
-                    if (!name || !email || !message) {
+                    if (!nameInput.value.trim()) {
                         isValid = false;
-                        formStatus.textContent = 'Please fill out all required fields.';
-                        formStatus.className = 'mt-4 text-center h-6 text-red-500';
+                        nameInput.classList.add('border-red-500');
                     }
-                     // Basic email format check (optional, browser usually handles this)
-                    else if (!/^\S+@\S+\.\S+$/.test(email)) {
+                     if (!emailInput.value.trim()) {
+                        isValid = false;
+                        emailInput.classList.add('border-red-500');
+                    }
+                     if (!messageInput.value.trim()) {
+                        isValid = false;
+                        messageInput.classList.add('border-red-500');
+                    }
+
+                    // Basic email format check
+                    if (emailInput.value.trim() && !/^\S+@\S+\.\S+$/.test(emailInput.value.trim())) {
                          isValid = false;
+                         emailInput.classList.add('border-red-500');
                          formStatus.textContent = 'Please enter a valid email address.';
+                         formStatus.className = 'mt-4 text-center h-6 text-red-500';
+                    }
+
+                    if (!isValid && !formStatus.textContent) {
+                         formStatus.textContent = 'Please fill out all required fields.';
                          formStatus.className = 'mt-4 text-center h-6 text-red-500';
                     }
 
 
                     if (isValid) {
-                        // Simulate sending data (replace with actual backend API call using fetch)
+                        // Simulate sending data
                         formStatus.textContent = 'Sending...';
-                        formStatus.className = 'mt-4 text-center h-6 text-yellow-500'; // Gold for sending status
+                        // Use gold color for sending status, consistent with branding
+                        formStatus.className = 'mt-4 text-center h-6 text-gold';
 
                         // Simulate network delay and success response
                         setTimeout(() => {
                             formStatus.textContent = 'Message sent successfully!';
-                            formStatus.className = 'mt-4 text-center h-6 text-green-500'; // Green for success
+                            formStatus.className = 'mt-4 text-center h-6 text-green-500';
                             contactForm.reset(); // Clear the form fields
+                             [nameInput, emailInput, messageInput].forEach(input => input.classList.remove('border-red-500'));
+
 
                             // Optionally clear the status message after a few seconds
                             setTimeout(() => {
                                 formStatus.textContent = '';
                                 formStatus.className = 'mt-4 text-center h-6';
-                            }, 3000);
+                            }, 4000);
 
                         }, 1500); // 1.5 second delay simulation
                     }
@@ -347,10 +425,12 @@
                  console.error("Contact form elements not found.");
             }
 
-            // Set current year in footer
+            // --- Set current year in footer ---
             const yearSpan = document.getElementById('current-year');
             if (yearSpan) {
                 yearSpan.textContent = new Date().getFullYear();
+            } else {
+                console.error("Current year span not found in footer.");
             }
         });
 
